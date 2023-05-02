@@ -13,9 +13,10 @@ import { parse, format } from "date-fns";
 import getRandomIndex from "../../helpers/getRandomIndex";
 
 //library.add(fab, faTimes, faEnvelope);
+let router;
 
 export default function Post(props) {
-  const router = useRouter();
+  router = useRouter();
   function createMarkup() {
     return { __html: 
       props.post !== undefined &&
@@ -25,12 +26,10 @@ export default function Post(props) {
     };
   }
 
-  /*
   const random_post_index = getRandomIndex(props.tumblr_posts.length);
   const tumblr_post = props.tumblr_posts !== null && props.tumblr_posts !==undefined ? props.tumblr_posts[random_post_index] : null;
   const image = tumblr_post.photos !== undefined && tumblr_post.photos.length > 0 ? tumblr_post.photos[0].original_size : {};
   const imgURL = image.url;
-  */
 
   return (
     <main id="site-main" className="site-main outer bg-white">
@@ -124,7 +123,7 @@ export default function Post(props) {
           </Link>
         </div>
       </div>
-      {/*<div className="jayaresee-tumblr">
+      <div className="jayaresee-tumblr">
         <a 
           href="https://jayaresee.tumblr.com" 
           target="_blank"
@@ -140,23 +139,12 @@ export default function Post(props) {
             height: "9rem"
           }} 
         >
+        </div>
       </div>
-        </div>*/}
     </main>
   );
 }
-export async function getStaticPaths() {
-  return {
-    paths: [
-      // String variant:
-      '/writing/[slug].js',
-      // Object variant:
-      //{ params: { slug: 'second-post' } },
-    ],
-    fallback: true,
-  }
-}
-export async function getStaticProps(req) {
+export async function getServerSideProps(req) {
 //Post.getInitialProps = async (req) => {
   const baseUrl = process.env.NEXT_SERVER_URL;
   const api = new GhostContentAPI({
@@ -183,14 +171,14 @@ export async function getStaticProps(req) {
     serverDateTime = new Date();
   }
 
-  //const tumblr_posts_res = await fetch(`${baseUrl}/api/tumblr_posts`);
-  //const tumblr_posts = await tumblr_posts_res.json();
+  const tumblr_posts_res = await fetch(`${baseUrl}/api/tumblr_posts`);
+  const tumblr_posts = await tumblr_posts_res.json();
  
   return {
     props: {
       post: post,
       year: serverDateTime.getFullYear(),
-      //tumblr_posts: tumblr_posts
+      tumblr_posts: tumblr_posts
     }
   };
 };

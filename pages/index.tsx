@@ -5,7 +5,7 @@ import getRandomIndex from '../helpers/getRandomIndex';
 export default function Home(props: any) {
   const posts = props.posts.map((post: any) => {
     return (
-      <li key={post.id} className="list-item-title px-3 text-lg border-b-2">
+      <li key={post.id} className="list-item-title w-[22rem] lg:w-[32rem] px-3 text-lg border-b-2">
         <Link href={`/writing/[slug]`} as={`/writing/${post.slug}`}>
           <div className="flex justify-between items-center">
             <span
@@ -29,13 +29,13 @@ export default function Home(props: any) {
 
   return (
     <main>
-      <div className="home bg-white">
+      <div className="home bg-white flex flex-col items-center">
         <div
-          className="cf py-16 max-w-[64rem]"
+          className="flex justify-center py-16 max-w-[64rem]"
         >
-          <div className="flex-ns center">
-            <div className="w-100 center bw2 b--dark-gray">
-              <ul className="list ph0 mv0 f4">{posts}</ul>
+          <div className="">
+            <div className="w-full">
+              <ul className="px-0 my-0 text-lg">{posts}</ul>
             </div>
           </div>
         </div>
