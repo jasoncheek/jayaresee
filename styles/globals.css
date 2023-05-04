@@ -135,3 +135,11 @@ body {
 .Currently-info-author {
   font-size: 0.875rem;
 }
+
+.newsletter-signup {
+
+}
+
+.newsletter-signup .main {
+  background: #262626
+}

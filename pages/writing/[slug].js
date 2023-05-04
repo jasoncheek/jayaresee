@@ -32,12 +32,10 @@ export default function Post(props) {
   const imgURL = image.url;
 
   return (
-    <main id="site-main" className="site-main outer bg-white">
-      <div className="inner">
-        <article className="post-full post center pt6 pb5">
+    <main id="site-main" className="site-main bg-white">
+        <article className="post-full post flex flex-col items-center py-16">
           <header
-            className="post-full-header center ph3 tc"
-            style={{ maxWidth: "40rem" }}
+            className="post-full-header pt-0 pb-8 text-center w-max-[40rem]"
           >
             <section className="post-full-tags">
               <a
@@ -64,7 +62,7 @@ export default function Post(props) {
                 }
               </a>
             </section>
-            <h1 className="post-full-title f2 mt0 mb3">
+            <h1 className="post-full-title font-bold text-xl mt-0 mb-2">
               {
                 props.post !== undefined &&
                 props.post !== null
@@ -72,7 +70,7 @@ export default function Post(props) {
                 : null
               }
             </h1>
-            <div className="f7 gray">
+            <div className="text-xs text-neutral-500">
               {
                 props.post !== undefined &&
                 props.post !== null
@@ -87,7 +85,7 @@ export default function Post(props) {
           props.post !== null
             ? props.post.feature_image : null !== null ? (
             <figure
-              className="post-full-image w-100 ma0 center tc mb5"
+              className="post-full-image w-full m-0 text-center mb-5"
               style={{ maxWidth: "75rem" }}
             >
               <img src={props.post.feature_image} alt={props.post.title} />
@@ -99,11 +97,11 @@ export default function Post(props) {
                                             2000px" src="${props.post.feature_image}"`} alt={props.post.title} /> */}
             </figure>
           ) : null}
-          <section className="post-full-content center">
+          <section className="post-full-content">
             <div className="post-content">
               {
                 <div
-                  className="pb4 ph3 center lh-copy f4-ns system-serif"
+                  className="pb-4 py-3 leading-normal text-md"
                   style={{ maxWidth: "40rem" }}
                   dangerouslySetInnerHTML={createMarkup()}
                 ></div>
@@ -111,23 +109,18 @@ export default function Post(props) {
             </div>
           </section>
         </article>
-        <div className="more-posts db center tc" style={{ width: "10rem" }}>
+        <div className="more-posts text-center flex justify-center" >
           <Link href={`/writing`}
-            className="db f7 gray pv3 ph3 link"
+            className="text-xs block text-neutral-500 px-3 py-3"
           >
-            <span
-              style={{ fontWeight: "normal", color: "#777" }}
-            >
               View More Posts
-            </span>
           </Link>
         </div>
-      </div>
       <div className="jayaresee-tumblr">
         <a 
           href="https://jayaresee.tumblr.com" 
           target="_blank"
-          class="jayaresee-tumblr-overlay"
+          className="jayaresee-tumblr-overlay"
         >
         </a>
         <div 

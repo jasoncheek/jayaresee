@@ -51,13 +51,13 @@ const Writing = (props: any) => {
     const postsGroupYear = group[0].published_at_year;
     const postsList = group.map((post: any) => {
       return (
-        <li key={post.id} className="list-item-title w-100 ph3">
+        <li key={post.id} className="list-item-title w-[22rem] lg:w-[32rem] px-3 text-lg border-b-2">
           <Link href={`/writing/[slug]`} as={`/writing/${post.slug}`}>
-            <div>
-              <span className="fl v-mid pv3 link mw5 mw-none-ns lh-copy mr2">
+            <div className="flex justify-between">
+              <span className="py-3 max-w-5 leading-normal">
                 {post.title}
               </span>
-              <span className="fr pv3 mt1 light-silver f7 lh-copy">
+              <span className="py-3 mt-1 text-neutral-500 text-xs leading-normal">
                 {format(new Date(post.published_at), "MMMM Mo")}
               </span>
             </div>
@@ -67,31 +67,30 @@ const Writing = (props: any) => {
     });
 
     return (
-      <div key={group.group_published_at_month}>
-        <h2 className="tc f7 gray normal b--silver bb bw1 pb1 center mv0">
+      <div className="" key={group.group_published_at_month}>
+        <h2 className="border-b-2 border-neutral-500 font-semibold text-center text-xs text-neutral-500 pb-1 mx-0">
           {postsGroupYear}
         </h2>
-        <ul className="list tc ph0 mt0 mb4 f5">{postsList}</ul>
+        <ul className="px-0 my-0 text-lg">{postsList}</ul>
       </div>
     );
   });
 
   return (
     <>
-      <main id="site-main" className="writing site-main outer bg-white">
-        <div className="inner">
-
+      <main>
+        <div className="writing bg-white flex flex-col items-center">
           {props.tags.length > 0 ? (
             <div className="tags-wrap tc mt4 mb3">
                 <ul className="tags dib list mv0 pl0">{tagsList}</ul>
             </div>
           ) : null}
           <div
-            className="posts flex-ns pv6 center"
+            className="posts flex justify-center py-16 max-w-[64rem]"
             style={{ maxWidth: "32rem" }}
           >
-            <div className="flex-ns center w-100">
-              <div className="w-100 bw2 b--dark-gray">{posts}</div>
+            <div className="">
+              <div className="w-full">{posts}</div>
             </div>
           </div>
         </div>

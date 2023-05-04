@@ -29,6 +29,13 @@ export default function App({ Component, pageProps }: AppProps) {
         className="bg-neutral-800"
         style={{ height: "40rem" }}
       >
+        <iframe 
+          src="https://jayaresee.substack.com/embed" 
+          width="480" 
+          height="320" 
+          className="newsletter-signup"
+        >
+        </iframe>
       </footer>
     </div>
   </> 
