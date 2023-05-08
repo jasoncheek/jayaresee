@@ -40,32 +40,15 @@ export default function Home(props: any) {
           </div>
         </div>
         <div
-          className="flex justify-center text-center more-posts"
+          className="flex justify-center rounded-t-lg bg-neutral-100 text-center more-posts"
         >
           <Link href={`/writing`}
-            className="block text-xs text-neutral-500 py-3 px-3 link"
+            className="block text-xs py-3 px-5 link"
           >
-            <span
-              style={{ fontWeight: "normal", color: "#777" }}
-            >
+            <span>
               View More Posts
             </span>
           </Link>
-        </div>
-      </div>
-      <div className="jayaresee-tumblr">
-        <a 
-          href="https://jayaresee.tumblr.com" 
-          target="_blank"
-          className="jayaresee-tumblr-overlay"
-        >
-        </a>
-        <div 
-          style={{
-            background: imgURL !== undefined ? `no-repeat top center fixed url("${imgURL}")` : "url(https://64.media.tumblr.com/d82a88833605efd82a53b781c37913d9/b3648c69bb01eac5-89/s1280x1920/4ca1f55b97920660a290732857f841c8de887149.jpg) no-repeat top center fixed", 
-          }}
-          className="block h-[9rem]" 
-        >
         </div>
       </div>
     </main>

@@ -9,15 +9,8 @@ import {
 } from "lodash";
 import format from "date-fns/format";
 import getMonth from "date-fns/getMonth";
-//import postStyles from '../components/styled/postStyles.js'
-import getRandomIndex from "../../helpers/getRandomIndex";
 
 const Writing = (props: any) => {
-  const random_post_index = getRandomIndex(props.tumblr_posts.length);
-  const tumblr_post = props.tumblr_posts !== null && props.tumblr_posts !==undefined ? props.tumblr_posts[random_post_index] : null;
-  const image = tumblr_post.photos !== undefined && tumblr_post.photos.length > 0 ? tumblr_post.photos[0].original_size : {};
-  const imgURL = image.url;
-
   const [selectedTags, setSelectedTags] = useState();
   const tagsList = props.tags.map((tag: any) => {
     return (
@@ -94,24 +87,6 @@ const Writing = (props: any) => {
             </div>
           </div>
         </div>
-        <div className="jayaresee-tumblr">
-          <a 
-            href="https://jayaresee.tumblr.com" 
-            target="_blank"
-            className="jayaresee-tumblr-overlay"
-          >
-          </a>
-          <div 
-            style={{
-              background: imgURL !== undefined ? `url("${imgURL}") no-repeat top center fixed` : "url(https://64.media.tumblr.com/d82a88833605efd82a53b781c37913d9/b3648c69bb01eac5-89/s1280x1920/4ca1f55b97920660a290732857f841c8de887149.jpg) no-repeat top center fixed", 
-              backgroundSize: 'contain',
-              backgroundPosition: 'bottom',
-              display: "block", 
-              height: "9rem"
-            }} 
-          >
-          </div>
-      </div>
       </main>
     </>
   );
@@ -148,23 +123,11 @@ export async function getStaticProps(req: any) {
   const tumblr_posts_res = await fetch(`${baseUrl}/api/tumblr_posts`);
   const tumblr_posts = await tumblr_posts_res.json();
   
-  // const ig_post_res = await fetch(`${baseUrl}/api/ig_post`);
-  // const ig_post = await ig_post_res.json();
-
-  // const spotify_data_res = await fetch(`${baseUrl}/api/spotify_data`);
-  // const spotify_data = await spotify_data_res.json();
-
-  // const tweet_res = await fetch(`${baseUrl}/api/tweet`);
-  // const tweet = await tweet_res.json();
-
   const tags_res = await fetch(`${baseUrl}/api/tags`);
   const tags = await tags_res.json();
 
   return {
     props: {
-      // spotify_data: spotify_data,
-      // ig_post: ig_post,
-      // tweet: tweet,
       posts: postsGrouped,
       year: serverDateTime.getFullYear(),
       tags: tags,
