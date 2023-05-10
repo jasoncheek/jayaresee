@@ -1,6 +1,10 @@
 import Link from 'next/link'
 import { format } from "date-fns";
+import { useRouter } from 'next/router'
+import ErrorPage from 'next/error'
 import getRandomIndex from '../helpers/getRandomIndex';
+import load_posts from './lib/load_posts';
+import load_tumblr_posts from './lib/load_tumblr_posts';
 
 export default function Home(props: any) {
   const posts = props.posts.map((post: any) => {
@@ -22,11 +26,10 @@ export default function Home(props: any) {
     );
   });
 
-  const random_post_index = getRandomIndex(props.tumblr_posts.length);
-  const tumblr_post = props.tumblr_posts !== null && props.tumblr_posts !==undefined ? props.tumblr_posts[random_post_index] : null;
-  const image = tumblr_post.photos !== undefined && tumblr_post.photos.length > 0 ? tumblr_post.photos[0].original_size : {};
-  const imgURL = image.url;
-
+  const router = useRouter()
+  if (!router.isFallback && !props) {
+      return <ErrorPage statusCode={404} />
+  }
   return (
     <main>
       <div className="home bg-white flex flex-col items-center">
@@ -55,14 +58,11 @@ export default function Home(props: any) {
   )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const baseUrl = process.env.NEXT_SERVER_URL;
-
-  const posts_res = await fetch(`${baseUrl}/api/posts`);
-  const posts = await posts_res.json();
-
-  const tumblr_posts_res = await fetch(`${baseUrl}/api/tumblr_posts`);
-  const tumblr_posts = await tumblr_posts_res.json();
+  const posts = await load_posts().then(json => {return json});
+  const tumblr_posts_res = await load_tumblr_posts().then(json => {return json}); 
+  const tumblr_posts = tumblr_posts_res.posts !== null && tumblr_posts_res.posts !== undefined ? tumblr_posts_res.posts : [];
   
   // const spotify_data_res = await fetch(`${baseUrl}/api/spotify_data`);
   // const spotify_data = await spotify_data_res.json();
@@ -72,12 +72,12 @@ export async function getStaticProps() {
 
   return {
     props: {
-      // spotify_data: spotify_data,
-      // ig_post: ig_post,
-      // tweet: tweet,
       posts: posts,
       //year: serverDateTime.getFullYear(),
       tumblr_posts: tumblr_posts
     }
+    // spotify_data: spotify_data,
+    // ig_post: ig_post,
+    // tweet: tweet,
   };
 };

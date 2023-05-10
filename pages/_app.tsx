@@ -1,5 +1,8 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
+import { useRouter } from 'next/router'
+import ErrorPage from 'next/error'
+import Link from 'next/link'
 import { ReactEventHandler, useState, useCallback } from 'react'
 import getRandomIndex from '../helpers/getRandomIndex';
 
@@ -10,10 +13,12 @@ export default function App({ Component, pageProps }: AppProps) {
   const imgURL = image.url;
 
   const [ emailSubmitted, setEmailSubmitted ] = useState(false);
+  const [ emailLoading, setEmailLoading ] = useState(false);
   
   const handleNewsletterSubmit = async (event: any) => {
     event.preventDefault();
     //console.log(event.target[0].value);
+    setEmailLoading(true);
     try {
       await fetch("https://jayaresee.us21.list-manage.com/subscribe/post?u=bbd1f95dfd57c8af9d4fa43ef&amp;id=55f8733376&amp;f_id=00cfbfe1f0", {
         method: "POST",
@@ -23,11 +28,17 @@ export default function App({ Component, pageProps }: AppProps) {
         },
         body:
           `EMAIL=${event.target[0].value}`
-      }); 
+      });
+      setEmailLoading(false);
       setEmailSubmitted(true);
     } catch (error) {
       console.log(error);
     }
+  }
+  
+  const router = useRouter()
+  if (!router.isFallback && !pageProps) {
+      return <ErrorPage statusCode={404} />
   }
   
   return (
@@ -41,12 +52,12 @@ export default function App({ Component, pageProps }: AppProps) {
               <span className="">stories and songs</span>
             </div>
             <div className="basis-3/5">
-              <a
+              <Link
                 className="flex justify-center site-nav-logo"
                 href="/"
               >
                 <img className="w-[200px] h-[44px]" src="https://s3.us-east-2.amazonaws.com/www.jayaresee.com/jayaresee-dark.svg" alt="jay are see" />
-              </a>
+              </Link>
             </div>
             <div className="basis-1/5 text-xs text-neutral-500 leading-tight text-right pr-3">
               <span className="">new orleans, louisiana</span>
@@ -55,12 +66,12 @@ export default function App({ Component, pageProps }: AppProps) {
         </header>
         <Component {...pageProps} />
         <div className="jayaresee-tumblr">
-          <a 
+          <Link 
             href="https://jayaresee.tumblr.com" 
             target="_blank"
             className="jayaresee-tumblr-overlay"
           >
-          </a>
+          </Link>
           <div 
             style={{
               background: imgURL !== undefined ? `no-repeat top center fixed url("${imgURL}")` : "url(https://64.media.tumblr.com/d82a88833605efd82a53b781c37913d9/b3648c69bb01eac5-89/s1280x1920/4ca1f55b97920660a290732857f841c8de887149.jpg) no-repeat top center fixed", 
@@ -76,7 +87,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <div id="mc_embed_signup" className="w-full absolute bottom-24">
             <form onSubmit={handleNewsletterSubmit} id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" className="validate" target="_self">
               <div id="mc_embed_signup_scroll" className="flex flex-col items-center text-center">
-                <h2 className="w-48 mb-4 text-sm leading-normal">Sign up for my newsletter, and I'll send you a new song.</h2>
+                <h2 className="w-48 mb-4 text-sm leading-normal">Sign up for my newsletter, and I&apos;ll send you a new song.</h2>
                 {/* <div className="indicates-required"><span className="asterisk">*</span> indicates required</div> */}
                 <div className="">
                   <div className="mc-field-group">
@@ -100,24 +111,36 @@ export default function App({ Component, pageProps }: AppProps) {
                     <input type="text" name="b_bbd1f95dfd57c8af9d4fa43ef_55f8733376" tabIndex={-1} value="" />
                   </div>
 
-                  {emailSubmitted ?
-                    <input 
+                  {emailLoading ?
+                    <button 
                       type="submit" 
-                      value="It's on the way" 
                       name="subscribe" 
                       id="mc-embedded-subscribe" 
                       className="cursor-pointer font-semibold button py-3 w-full bg-[#002fa7] text-sm text-neutral-200 rounded-b-lg" 
-                    />
+                    >
+                      Loading
+                    </button>
                     :
-                    <input 
-                      type="submit" 
-                      value="Send It" 
-                      name="subscribe" 
-                      id="mc-embedded-subscribe" 
-                      className="cursor-pointer font-semibold button py-3 w-full bg-neutral-700 text-sm text-neutral-200 rounded-b-lg" 
-                    />
-                  }
-
+                      emailSubmitted ? 
+                        <button
+                          type="submit" 
+                          name="subscribe" 
+                          id="mc-embedded-subscribe" 
+                          className="cursor-pointer font-semibold button py-3 w-full bg-[#002fa7] text-sm text-neutral-200 rounded-b-lg" 
+                        >
+                          It&apos;s on the way
+                        </button>
+                      :
+                        <button 
+                          type="submit" 
+                          name="subscribe" 
+                          id="mc-embedded-subscribe" 
+                          className="cursor-pointer font-semibold button py-3 w-full bg-neutral-700 text-sm text-neutral-200 rounded-b-lg" 
+                        >
+                          Send It
+                        </button>
+                      
+                    }
                 </div>
               </div>
             </form>

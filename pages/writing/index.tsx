@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import ErrorPage from 'next/error';
 import { formatDistanceToNow, fromUnixTime, formatISO } from "date-fns";
 import {
   groupBy as _groupBy,
@@ -9,6 +11,8 @@ import {
 } from "lodash";
 import format from "date-fns/format";
 import getMonth from "date-fns/getMonth";
+import load_posts from '../lib/load_posts';
+import load_tumblr_posts from "../lib/load_tumblr_posts";
 
 const Writing = (props: any) => {
   const [selectedTags, setSelectedTags] = useState();
@@ -69,6 +73,11 @@ const Writing = (props: any) => {
     );
   });
 
+  const router = useRouter();
+  if (!router.isFallback && !props) {
+      return <ErrorPage statusCode={404} />
+  }
+  
   return (
     <>
       <main>
@@ -92,8 +101,7 @@ const Writing = (props: any) => {
   );
 };
 
-export async function getStaticProps(req: any) {
-//Writing.getInitialProps = async ({ req }) => {
+export async function getServerSideProps(req: any) {
   let serverDateTime = null;
 
   if (req) {
@@ -103,9 +111,10 @@ export async function getStaticProps(req: any) {
   }
 
   const baseUrl = process.env.NEXT_SERVER_URL;
-
-  const posts_res = await fetch(`${baseUrl}/api/posts`);
-  const posts = await posts_res.json();
+  const posts_res = await load_posts();
+  const posts = await load_posts().then(json => {return json});
+  const tumblr_posts_res = await load_tumblr_posts().then(json => {return json}); 
+  const tumblr_posts = tumblr_posts_res.posts !== null && tumblr_posts_res.posts !== undefined ? tumblr_posts_res.posts : [];
   const postsUpdated = posts.map((post:any) => {
     post.published_at_formatted = format(
       new Date(post.published_at),
@@ -119,19 +128,15 @@ export async function getStaticProps(req: any) {
     return post;
   });
   const postsGrouped = _groupBy(postsUpdated, "published_at_year");
-
-  const tumblr_posts_res = await fetch(`${baseUrl}/api/tumblr_posts`);
-  const tumblr_posts = await tumblr_posts_res.json();
-  
   const tags_res = await fetch(`${baseUrl}/api/tags`);
   const tags = await tags_res.json();
 
   return {
     props: {
-      posts: postsGrouped,
-      year: serverDateTime.getFullYear(),
-      tags: tags,
-      tumblr_posts: tumblr_posts,
+        posts: postsGrouped,
+        year: serverDateTime.getFullYear(),
+        tags: tags,
+        tumblr_posts: tumblr_posts,
     }
   };
 };

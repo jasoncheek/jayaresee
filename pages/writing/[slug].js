@@ -1,8 +1,10 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import ErrorPage from 'next/error';
 import GhostContentAPI from "@tryghost/content-api";
 import { format } from "date-fns";
+import load_tumblr_posts from '../lib/load_tumblr_posts';
 
 let router;
 
@@ -16,7 +18,9 @@ export default function Post(props) {
       : null
     };
   }
-
+  if (!router.isFallback && !props) {
+      return <ErrorPage statusCode={404} />
+  }
   return (
     <main id="site-main" className="flex flex-col items-center site-main bg-white">
         <article className="post-full post flex flex-col items-center py-16">
@@ -128,13 +132,13 @@ export async function getServerSideProps(req) {
   if (req) {
     serverDateTime = new Date();
   }
-  const tumblr_posts_res = await fetch(`${baseUrl}/api/tumblr_posts`);
-  const tumblr_posts = await tumblr_posts_res.json();
+  const tumblr_posts_res = await load_tumblr_posts().then(json => {return json}); 
+  const tumblr_posts = tumblr_posts_res.posts !== null && tumblr_posts_res.posts !== undefined ? tumblr_posts_res.posts : [];
   return {
     props: {
-      post: post,
-      year: serverDateTime.getFullYear(),
-      tumblr_posts: tumblr_posts,
+        post: post,
+        year: serverDateTime.getFullYear(),
+        tumblr_posts: tumblr_posts,
     }
   };
 };
