@@ -11,8 +11,8 @@ import {
 } from "lodash";
 import format from "date-fns/format";
 import getMonth from "date-fns/getMonth";
-import load_posts from '../lib/load_posts';
-import load_tumblr_posts from "../lib/load_tumblr_posts";
+import load_posts from '../../lib/load_posts';
+import load_tumblr_posts from "../../lib/load_tumblr_posts";
 
 const Writing = (props: any) => {
   const [selectedTags, setSelectedTags] = useState();

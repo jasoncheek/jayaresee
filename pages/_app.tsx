@@ -7,8 +7,8 @@ import { ReactEventHandler, useState, useCallback } from 'react'
 import getRandomIndex from '../helpers/getRandomIndex';
 
 export default function App({ Component, pageProps }: AppProps) {
-  const random_post_index = getRandomIndex(pageProps.tumblr_posts.length);
-  const tumblr_post = pageProps.tumblr_posts !== null && pageProps.tumblr_posts !==undefined ? pageProps.tumblr_posts[random_post_index] : null;
+  const random_post_index = getRandomIndex(pageProps !== undefined && pageProps !== null ? pageProps.tumblr_posts !== undefined && pageProps.tumblr_posts !== null ? pageProps.tumblr_posts.length : 0 : 0);
+  const tumblr_post = pageProps !== undefined && pageProps !== null ? pageProps.tumblr_posts !== null && pageProps.tumblr_posts !==undefined ? pageProps.tumblr_posts[random_post_index] : {} : {};
   const image = tumblr_post.photos !== undefined && tumblr_post.photos.length > 0 ? tumblr_post.photos[0].original_size : {};
   const imgURL = image.url;
 

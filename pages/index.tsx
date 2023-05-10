@@ -3,8 +3,8 @@ import { format } from "date-fns";
 import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import getRandomIndex from '../helpers/getRandomIndex';
-import load_posts from './lib/load_posts';
-import load_tumblr_posts from './lib/load_tumblr_posts';
+import load_posts from '../lib/load_posts';
+import load_tumblr_posts from '../lib/load_tumblr_posts';
 
 export default function Home(props: any) {
   const posts = props.posts.map((post: any) => {

@@ -1,5 +1,5 @@
 import GhostContentAPI from "@tryghost/content-api";
-import load_posts from "../lib/load_posts";
+import load_posts from "../../lib/load_posts";
 
 export default async (req, res) => {
   const posts = await load_posts();

@@ -18,6 +18,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/lib/load_posts.js", "pages/api/posts.js", "pages/api/tumblr_posts.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/load_posts.js", "pages/api/posts.js", "pages/api/tumblr_posts.js"],
   "exclude": ["node_modules"]
 }
