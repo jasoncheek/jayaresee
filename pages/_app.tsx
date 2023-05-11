@@ -118,7 +118,7 @@ export default function App({ Component, pageProps }: AppProps) {
                       id="mc-embedded-subscribe" 
                       className="cursor-pointer font-semibold button py-3 w-full bg-[#002fa7] text-sm text-neutral-200 rounded-b-lg" 
                     >
-                      Sending
+                      Loading
                     </button>
                     :
                       emailSubmitted ? 
